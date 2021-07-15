@@ -2,8 +2,6 @@ Notes taken from
 https://www.w3schools.com/sql
 https://www.linkedin.com/learning/learning-sql-programming
 
-
-
 # SQL Statements
 
 This document provides a list of SQL statements used in the course _Learning SQL Programming_ from LinkedIn Learning.
@@ -446,6 +444,7 @@ SELECT column_name(s)
 FROM table1 T1, table1 T2
 WHERE condition;
 ```
+
 ```sql
 SELECT A.CustomerName AS CustomerName1, B.CustomerName AS CustomerName2, A.City
 FROM Customers A, Customers B
@@ -459,7 +458,7 @@ SELECT a.name, a.id, b.name, b.dep_id
 FROM employee a
 JOIN employee b
 on a.id = b.id
-AND a.xyz = b.xyz; 
+AND a.xyz = b.xyz;
 ```
 
 The SQL UNION Operator
@@ -1631,10 +1630,12 @@ Solutions
 MySQL
 
 The MySQL IFNULL() function lets you return an alternative value if an expression is NULL:
+
 ```sql
 SELECT ProductName, UnitPrice * (UnitsInStock + IFNULL(UnitsOnOrder, 0))
 FROM Products;
 ```
+
 or we can use the COALESCE() function, like this:
 
 ```sql
@@ -1692,6 +1693,7 @@ Execute a Stored Procedure
 ```sql
 EXEC procedure_name;
 ```
+
 Stored Procedure Example
 The following SQL statement creates a stored procedure named "SelectAllCustomers" that selects all records from the "Customers" table:
 
@@ -1737,6 +1739,7 @@ AS
 SELECT * FROM Customers WHERE City = @City AND PostalCode = @PostalCode
 GO;
 ```
+
 Execute the stored procedure above as follows:
 
 ```sql
@@ -1779,13 +1782,12 @@ SQL Arithmetic Operators
 
 ```sql
 Operator	Description
-+	        Add	
--	        Subtract	
-*	        Multiply	
-/	        Divide	
++	        Add
+-	        Subtract
+*	        Multiply
+/	        Divide
 %	        Modulo
 ```
-
 
 SQL Bitwise Operators
 
@@ -1796,17 +1798,16 @@ Operator	Description
 ^	        Bitwise exclusive OR
 ```
 
-
 SQL Comparison Operators
 
 ```sql
-Operator	Description	
-=	        Equal to	
->	        Greater than	
-<	        Less than	
->=	      Greater than or equal to	
-<=	      Less than or equal to	
-<>	      Not equal to	
+Operator	Description
+=	        Equal to
+>	        Greater than
+<	        Less than
+>=	      Greater than or equal to
+<=	      Less than or equal to
+<>	      Not equal to
 ```
 
 SQL Compound Operators
@@ -1822,25 +1823,228 @@ Operator	Description
 ^-=	      Bitwise exclusive equals
 |*=	      itwise OR equals
 ```
+
 SQL Logical Operators
 
 ```sql
-Operator	Description	
-ALL	      TRUE if all of the subquery values meet the condition	
-AND	      TRUE if all the conditions separated by AND is TRUE	
-ANY	      TRUE if any of the subquery values meet the condition	
-BETWEEN	  TRUE if the operand is within the range of comparisons	
-EXISTS	  TRUE if the subquery returns one or more records	
-IN	      TRUE if the operand is equal to one of a list of expressions	
-LIKE	    TRUE if the operand matches a pattern	
-NOT	      Displays a record if the condition(s) is NOT TRUE	
-OR	      TRUE if any of the conditions separated by OR is TRUE	
+Operator	Description
+ALL	      TRUE if all of the subquery values meet the condition
+AND	      TRUE if all the conditions separated by AND is TRUE
+ANY	      TRUE if any of the subquery values meet the condition
+BETWEEN	  TRUE if the operand is within the range of comparisons
+EXISTS	  TRUE if the subquery returns one or more records
+IN	      TRUE if the operand is equal to one of a list of expressions
+LIKE	    TRUE if the operand matches a pattern
+NOT	      Displays a record if the condition(s) is NOT TRUE
+OR	      TRUE if any of the conditions separated by OR is TRUE
 SOME	    TRUE if any of the subquery values meet the condition
 ```
-
-
 
 The SQL CREATE DATABASE Statement
 The CREATE DATABASE statement is used to create a new SQL database.
 
 Syntax
+
+```sql
+CREATE DATABASE databasename;
+```
+
+The SQL DROP DATABASE Statement
+The DROP DATABASE statement is used to drop an existing SQL database.
+
+Syntax
+
+```sql
+DROP DATABASE databasename;
+```
+
+The SQL BACKUP DATABASE Statement
+The BACKUP DATABASE statement is used in SQL Server to create a full back up of an existing SQL database.
+
+Syntax
+
+```sql
+BACKUP DATABASE databasename
+TO DISK = 'filepath';
+```
+
+The SQL BACKUP WITH DIFFERENTIAL Statement
+A differential back up only backs up the parts of the database that have changed since the last full database backup.
+
+Syntax
+
+```sql
+BACKUP DATABASE databasename
+TO DISK = 'filepath'
+WITH DIFFERENTIAL;
+```
+
+BACKUP DATABASE Example
+The following SQL statement creates a full back up of the existing database "testDB" to the D disk:
+
+```sql
+BACKUP DATABASE testDB
+TO DISK = 'D:\backups\testDB.bak';
+```
+
+BACKUP WITH DIFFERENTIAL Example
+The following SQL statement creates a differential back up of the database "testDB":
+
+```sql
+BACKUP DATABASE testDB
+TO DISK = 'D:\backups\testDB.bak'
+WITH DIFFERENTIAL;
+```
+
+Tip: A differential back up reduces the back up time (since only the changes are backed up).
+
+The SQL CREATE TABLE Statement
+The CREATE TABLE statement is used to create a new table in a database.
+
+Syntax
+
+```sql
+CREATE TABLE table_name (
+    column1 datatype,
+    column2 datatype,
+    column3 datatype,
+   ....
+);
+```
+
+The column parameters specify the names of the columns of the table.
+
+The datatype parameter specifies the type of data the column can hold (e.g. varchar, integer, date, etc.).
+
+SQL CREATE TABLE Example
+The following example creates a table called "Persons" that contains five columns: PersonID, LastName, FirstName, Address, and City:
+
+Example
+
+```sql
+CREATE TABLE Persons (
+    PersonID int,
+    LastName varchar(255),
+    FirstName varchar(255),
+    Address varchar(255),
+    City varchar(255)
+);
+```
+
+The PersonID column is of type int and will hold an integer.
+
+The LastName, FirstName, Address, and City columns are of type varchar and will hold characters, and the maximum length for these fields is 255 characters.
+
+The empty "Persons" table will now look like this:
+
+PersonID LastName FirstName Address City
+Tip: The empty "Persons" table can now be filled with data with the SQL INSERT INTO statement.
+
+Create Table Using Another Table
+
+A copy of an existing table can also be created using CREATE TABLE.
+
+The new table gets the same column definitions. All columns or specific columns can be selected.
+
+If you create a new table using an existing table, the new table will be filled with the existing values from the old table.
+
+Syntax
+
+```sql
+CREATE TABLE new_table_name AS
+    SELECT column1, column2,...
+    FROM existing_table_name
+    WHERE ....;
+
+```
+
+The following SQL creates a new table called "TestTables" (which is a copy of the "Customers" table):
+
+Example
+
+```sql
+CREATE TABLE TestTable AS
+SELECT customername, contactname
+FROM customers;
+```
+
+The SQL DROP TABLE Statement
+The DROP TABLE statement is used to drop an existing table in a database.
+
+Syntax
+
+```sql
+DROP TABLE table_name;
+```
+
+SQL TRUNCATE TABLE
+The TRUNCATE TABLE statement is used to delete the data inside a table, but not the table itself.
+
+Syntax
+
+```sql
+TRUNCATE TABLE table_name;
+```
+
+SQL ALTER TABLE Statement
+The ALTER TABLE statement is used to add, delete, or modify columns in an existing table.
+
+The ALTER TABLE statement is also used to add and drop various constraints on an existing table.
+
+ALTER TABLE - ADD Column
+To add a column in a table, use the following syntax:
+
+```sql
+ALTER TABLE table_name
+ADD column_name datatype;
+```
+
+The following SQL adds an "Email" column to the "Customers" table:
+
+Example
+
+```sql
+ALTER TABLE Customers
+ADD Email varchar(255);
+```
+
+ALTER TABLE - DROP COLUMN
+To delete a column in a table, use the following syntax (notice that some database systems don't allow deleting a column):
+
+```sql
+ALTER TABLE table_name
+DROP COLUMN column_name;
+```
+
+The following SQL deletes the "Email" column from the "Customers" table:
+
+Example
+
+```sql
+ALTER TABLE Customers
+DROP COLUMN Email;
+```
+
+ALTER TABLE - ALTER/MODIFY COLUMN
+To change the data type of a column in a table, use the following syntax:
+
+SQL Server / MS Access:
+
+```sql
+ALTER TABLE table_name
+ALTER COLUMN column_name datatype;
+```
+
+My SQL / Oracle (prior version 10G):
+
+```sql
+ALTER TABLE table_name
+MODIFY COLUMN column_name datatype;
+```
+
+Oracle 10G and later:
+
+```sql
+ALTER TABLE table_name
+MODIFY column_name datatype;
+```
