@@ -1,12 +1,14 @@
+Notes taken from
+https://www.w3schools.com/sql
+https://www.linkedin.com/learning/learning-sql-programming
+
+
+
 # SQL Statements
 
 This document provides a list of SQL statements used in the course _Learning SQL Programming_ from LinkedIn Learning.
 
 Note that this list contains statements which are improper (they have syntax errors) and statements which are incorrect (they do not achieve the desired goal).
-
-https://www.w3schools.com/sql
-https://www.linkedin.com/learning/learning-sql-programming-8382385/learning-sql-programming?u=2154233
-https://www.linkedin.com/learning/learning-sql-programming-8382385/learning-sql-programming
 
 ## 00_02
 
@@ -443,12 +445,21 @@ Self Join Syntax
 SELECT column_name(s)
 FROM table1 T1, table1 T2
 WHERE condition;
-
+```
+```sql
 SELECT A.CustomerName AS CustomerName1, B.CustomerName AS CustomerName2, A.City
 FROM Customers A, Customers B
 WHERE A.CustomerID <> B.CustomerID
 AND A.City = B.City
 ORDER BY A.City;
+```
+
+```sql
+SELECT a.name, a.id, b.name, b.dep_id
+FROM employee a
+JOIN employee b
+on a.id = b.id
+AND a.xyz = b.xyz; 
 ```
 
 The SQL UNION Operator
@@ -1601,3 +1612,235 @@ ORDER BY
     ELSE City
 END);
 ```
+
+SQL NULL Functions
+SQL IFNULL(), ISNULL(), COALESCE(), and NVL() Functions
+
+Suppose that the "UnitsOnOrder" column is optional, and may contain NULL values.
+
+Look at the following SELECT statement:
+
+```sql
+SELECT ProductName, UnitPrice * (UnitsInStock + UnitsOnOrder)
+FROM Products;
+```
+
+In the example above, if any of the "UnitsOnOrder" values are NULL, the result will be NULL.
+
+Solutions
+MySQL
+
+The MySQL IFNULL() function lets you return an alternative value if an expression is NULL:
+```sql
+SELECT ProductName, UnitPrice * (UnitsInStock + IFNULL(UnitsOnOrder, 0))
+FROM Products;
+```
+or we can use the COALESCE() function, like this:
+
+```sql
+SELECT ProductName, UnitPrice * (UnitsInStock + COALESCE(UnitsOnOrder, 0))
+FROM Products;
+```
+
+SQL Server
+
+The SQL Server ISNULL() function lets you return an alternative value when an expression is NULL:
+
+```sql
+SELECT ProductName, UnitPrice * (UnitsInStock + ISNULL(UnitsOnOrder, 0))
+FROM Products;
+```
+
+MS Access
+
+The MS Access IsNull() function returns TRUE (-1) if the expression is a null value, otherwise FALSE (0):
+
+```sql
+SELECT ProductName, UnitPrice * (UnitsInStock + IIF(IsNull(UnitsOnOrder), 0, UnitsOnOrder))
+FROM Products;
+```
+
+Oracle
+
+The Oracle NVL() function achieves the same result:
+
+```sql
+SELECT ProductName, UnitPrice * (UnitsInStock + NVL(UnitsOnOrder, 0))
+FROM Products;
+```
+
+SQL Stored Procedures for SQL Server
+
+What is a Stored Procedure?
+A stored procedure is a prepared SQL code that you can save, so the code can be reused over and over again.
+
+So if you have an SQL query that you write over and over again, save it as a stored procedure, and then just call it to execute it.
+
+You can also pass parameters to a stored procedure, so that the stored procedure can act based on the parameter value(s) that is passed.
+
+Stored Procedure Syntax
+
+```sql
+CREATE PROCEDURE procedure_name
+AS
+sql_statement
+GO;
+```
+
+Execute a Stored Procedure
+
+```sql
+EXEC procedure_name;
+```
+Stored Procedure Example
+The following SQL statement creates a stored procedure named "SelectAllCustomers" that selects all records from the "Customers" table:
+
+```sql
+CREATE PROCEDURE SelectAllCustomers
+AS
+SELECT * FROM Customers
+GO;
+```
+
+Execute the stored procedure above as follows:
+
+```sql
+EXEC SelectAllCustomers;
+```
+
+Stored Procedure With One Parameter
+
+The following SQL statement creates a stored procedure that selects Customers from a particular City from the "Customers" table:
+
+```sql
+CREATE PROCEDURE SelectAllCustomers @City nvarchar(30)
+AS
+SELECT * FROM Customers WHERE City = @City
+GO;
+```
+
+Execute the stored procedure above as follows:
+
+```sql
+EXEC SelectAllCustomers @City = 'London';
+```
+
+Stored Procedure With Multiple Parameters
+
+Setting up multiple parameters is very easy. Just list each parameter and the data type separated by a comma as shown below.
+
+The following SQL statement creates a stored procedure that selects Customers from a particular City with a particular PostalCode from the "Customers" table:
+
+```sql
+CREATE PROCEDURE SelectAllCustomers @City nvarchar(30), @PostalCode nvarchar(10)
+AS
+SELECT * FROM Customers WHERE City = @City AND PostalCode = @PostalCode
+GO;
+```
+Execute the stored procedure above as follows:
+
+```sql
+EXEC SelectAllCustomers @City = 'London', @PostalCode = 'WA1 1DP';
+```
+
+SQL Comments
+Comments are used to explain sections of SQL statements, or to prevent execution of SQL statements.
+
+Note: The examples in this chapter will not work in Firefox and Microsoft Edge!
+
+Comments are not supported in Microsoft Access databases. Firefox and Microsoft Edge are using Microsoft Access database in our examples.
+
+Single Line Comments
+Single line comments start with --.
+
+Any text between -- and the end of the line will be ignored (will not be executed).
+
+The following example uses a single-line comment as an explanation:
+
+```sql
+--Select all:
+SELECT * FROM Customers;
+```
+
+The following example uses a single-line comment to ignore the end of a line:
+
+```sql
+SELECT * FROM Customers -- WHERE City='Berlin';
+```
+
+The following example uses a single-line comment to ignore a statement:
+
+```sql
+--SELECT * FROM Customers;
+SELECT * FROM Products;
+```
+
+SQL Arithmetic Operators
+
+```sql
+Operator	Description
++	        Add	
+-	        Subtract	
+*	        Multiply	
+/	        Divide	
+%	        Modulo
+```
+
+
+SQL Bitwise Operators
+
+```sql
+Operator	Description
+&	        Bitwise AND
+|	        Bitwise OR
+^	        Bitwise exclusive OR
+```
+
+
+SQL Comparison Operators
+
+```sql
+Operator	Description	
+=	        Equal to	
+>	        Greater than	
+<	        Less than	
+>=	      Greater than or equal to	
+<=	      Less than or equal to	
+<>	      Not equal to	
+```
+
+SQL Compound Operators
+
+```sql
+Operator	Description
++=	      Add equals
+-=	      Subtract equals
+*=	      Multiply equals
+/=	      Divide equals
+%=	      Modulo equals
+&=	      Bitwise AND equals
+^-=	      Bitwise exclusive equals
+|*=	      itwise OR equals
+```
+SQL Logical Operators
+
+```sql
+Operator	Description	
+ALL	      TRUE if all of the subquery values meet the condition	
+AND	      TRUE if all the conditions separated by AND is TRUE	
+ANY	      TRUE if any of the subquery values meet the condition	
+BETWEEN	  TRUE if the operand is within the range of comparisons	
+EXISTS	  TRUE if the subquery returns one or more records	
+IN	      TRUE if the operand is equal to one of a list of expressions	
+LIKE	    TRUE if the operand matches a pattern	
+NOT	      Displays a record if the condition(s) is NOT TRUE	
+OR	      TRUE if any of the conditions separated by OR is TRUE	
+SOME	    TRUE if any of the subquery values meet the condition
+```
+
+
+
+The SQL CREATE DATABASE Statement
+The CREATE DATABASE statement is used to create a new SQL database.
+
+Syntax
