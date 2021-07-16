@@ -2048,5 +2048,3 @@ Oracle 10G and later:
 ALTER TABLE table_name
 MODIFY column_name datatype;
 ```
-
-HOLA LUIS
