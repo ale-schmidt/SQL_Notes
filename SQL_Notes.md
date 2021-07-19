@@ -1103,7 +1103,7 @@ _	      Represents a single character	                                  h_t find
 -	      Represents a range of characters	                              c[a-b]t finds cat and cbt
 ```
 
-<!-- Here are some examples showing different LIKE operators with '%' and '_' wildcards: -->
+Here are some examples showing different LIKE operators with '%' and '\_' wildcards:
 
 ```sql
 LIKE    Operator	                                                Description
@@ -2048,3 +2048,821 @@ Oracle 10G and later:
 ALTER TABLE table_name
 MODIFY column_name datatype;
 ```
+
+SQL constraints are used to specify rules for data in a table.
+
+SQL Create Constraints
+Constraints can be specified when the table is created with the CREATE TABLE statement, or after the table is created with the ALTER TABLE statement.
+
+Syntax
+
+```sql
+CREATE TABLE table_name (
+    column1 datatype constraint,
+    column2 datatype constraint,
+    column3 datatype constraint,
+    ....
+);
+```
+
+SQL Constraints
+SQL constraints are used to specify rules for the data in a table.
+
+Constraints are used to limit the type of data that can go into a table. This ensures the accuracy and reliability of the data in the table. If there is any violation between the constraint and the data action, the action is aborted.
+
+Constraints can be column level or table level. Column level constraints apply to a column, and table level constraints apply to the whole table.
+
+The following constraints are commonly used in SQL:
+
+NOT NULL - Ensures that a column cannot have a NULL value
+UNIQUE - Ensures that all values in a column are different
+PRIMARY KEY - A combination of a NOT NULL and UNIQUE. Uniquely identifies each row in a table
+FOREIGN KEY - Prevents actions that would destroy links between tables
+CHECK - Ensures that the values in a column satisfies a specific condition
+DEFAULT - Sets a default value for a column if no value is specified
+CREATE INDEX - Used to create and retrieve data from the database very quickly
+
+SQL NOT NULL Constraint
+By default, a column can hold NULL values.
+
+The NOT NULL constraint enforces a column to NOT accept NULL values.
+
+This enforces a field to always contain a value, which means that you cannot insert a new record, or update a record without adding a value to this field.
+
+SQL NOT NULL on CREATE TABLE
+The following SQL ensures that the "ID", "LastName", and "FirstName" columns will NOT accept NULL values when the "Persons" table is created:
+
+Example
+
+```sql
+CREATE TABLE Persons (
+    ID int NOT NULL,
+    LastName varchar(255) NOT NULL,
+    FirstName varchar(255) NOT NULL,
+    Age int
+);
+```
+
+SQL NOT NULL on ALTER TABLE
+To create a NOT NULL constraint on the "Age" column when the "Persons" table is already created, use the following SQL:
+
+```sql
+ALTER TABLE Persons
+MODIFY Age int NOT NULL;
+```
+
+SQL UNIQUE Constraint
+The UNIQUE constraint ensures that all values in a column are different.
+
+Both the UNIQUE and PRIMARY KEY constraints provide a guarantee for uniqueness for a column or set of columns.
+
+A PRIMARY KEY constraint automatically has a UNIQUE constraint.
+
+However, you can have many UNIQUE constraints per table, but only one PRIMARY KEY constraint per table.
+
+SQL UNIQUE Constraint on CREATE TABLE
+The following SQL creates a UNIQUE constraint on the "ID" column when the "Persons" table is created:
+
+SQL Server / Oracle / MS Access:
+
+```sql
+CREATE TABLE Persons (
+    ID int NOT NULL UNIQUE,
+    LastName varchar(255) NOT NULL,
+    FirstName varchar(255),
+    Age int
+);
+```
+
+MySQL:
+
+```sql
+CREATE TABLE Persons (
+    ID int NOT NULL,
+    LastName varchar(255) NOT NULL,
+    FirstName varchar(255),
+    Age int,
+    UNIQUE (ID)
+);
+```
+
+To name a UNIQUE constraint, and to define a UNIQUE constraint on multiple columns, use the following SQL syntax:
+
+MySQL / SQL Server / Oracle / MS Access:
+
+```sql
+CREATE TABLE Persons (
+    ID int NOT NULL,
+    LastName varchar(255) NOT NULL,
+    FirstName varchar(255),
+    Age int,
+    CONSTRAINT UC_Person UNIQUE (ID,LastName)
+);
+```
+
+SQL UNIQUE Constraint on ALTER TABLE
+To create a UNIQUE constraint on the "ID" column when the table is already created, use the following SQL:
+
+MySQL / SQL Server / Oracle / MS Access:
+
+```sql
+ALTER TABLE Persons
+ADD UNIQUE (ID);
+```
+
+To name a UNIQUE constraint, and to define a UNIQUE constraint on multiple columns, use the following SQL syntax:
+
+MySQL / SQL Server / Oracle / MS Access:
+
+```sql
+ALTER TABLE Persons
+ADD CONSTRAINT UC_Person UNIQUE (ID,LastName);
+```
+
+DROP a UNIQUE Constraint
+To drop a UNIQUE constraint, use the following SQL:
+
+MySQL:
+
+```sql
+ALTER TABLE Persons
+DROP INDEX UC_Person;
+```
+
+SQL Server / Oracle / MS Access:
+
+```sql
+ALTER TABLE Persons
+DROP CONSTRAINT UC_Person;
+```
+
+SQL PRIMARY KEY Constraint
+The PRIMARY KEY constraint uniquely identifies each record in a table.
+
+Primary keys must contain UNIQUE values, and cannot contain NULL values.
+
+A table can have only ONE primary key; and in the table, this primary key can consist of single or multiple columns (fields).
+
+SQL PRIMARY KEY on CREATE TABLE
+The following SQL creates a PRIMARY KEY on the "ID" column when the "Persons" table is created:
+
+MySQL:
+
+```sql
+CREATE TABLE Persons (
+    ID int NOT NULL,
+    LastName varchar(255) NOT NULL,
+    FirstName varchar(255),
+    Age int,
+    PRIMARY KEY (ID)
+);
+```
+
+SQL Server / Oracle / MS Access:
+
+```sql
+CREATE TABLE Persons (
+    ID int NOT NULL PRIMARY KEY,
+    LastName varchar(255) NOT NULL,
+    FirstName varchar(255),
+    Age int
+);
+```
+
+To allow naming of a PRIMARY KEY constraint, and for defining a PRIMARY KEY constraint on multiple columns, use the following SQL syntax:
+
+MySQL / SQL Server / Oracle / MS Access:
+
+```sql
+CREATE TABLE Persons (
+    ID int NOT NULL,
+    LastName varchar(255) NOT NULL,
+    FirstName varchar(255),
+    Age int,
+    CONSTRAINT PK_Person PRIMARY KEY (ID,LastName)
+);
+```
+
+Note: In the example above there is only ONE PRIMARY KEY (PK_Person). However, the VALUE of the primary key is made up of TWO COLUMNS (ID + LastName).
+
+SQL PRIMARY KEY on ALTER TABLE
+To create a PRIMARY KEY constraint on the "ID" column when the table is already created, use the following SQL:
+
+MySQL / SQL Server / Oracle / MS Access:
+
+```sql
+ALTER TABLE Persons
+ADD PRIMARY KEY (ID);
+```
+
+To allow naming of a PRIMARY KEY constraint, and for defining a PRIMARY KEY constraint on multiple columns, use the following SQL syntax:
+
+MySQL / SQL Server / Oracle / MS Access:
+
+```sql
+ALTER TABLE Persons
+ADD CONSTRAINT PK_Person PRIMARY KEY (ID,LastName);
+```
+
+Note: If you use ALTER TABLE to add a primary key, the primary key column(s) must have been declared to not contain NULL values (when the table was first created).
+
+DROP a PRIMARY KEY Constraint
+To drop a PRIMARY KEY constraint, use the following SQL:
+
+MySQL:
+
+```sql
+ALTER TABLE Persons
+DROP PRIMARY KEY;
+```
+
+SQL Server / Oracle / MS Access:
+
+```sql
+ALTER TABLE Persons
+DROP CONSTRAINT PK_Person;
+```
+
+SQL FOREIGN KEY Constraint
+The FOREIGN KEY constraint is used to prevent actions that would destroy links between tables.
+
+A FOREIGN KEY is a field (or collection of fields) in one table, that refers to the PRIMARY KEY in another table.
+
+The table with the foreign key is called the child table, and the table with the primary key is called the referenced or parent table.SQL FOREIGN KEY Constraint
+The FOREIGN KEY constraint is used to prevent actions that would destroy links between tables.
+
+A FOREIGN KEY is a field (or collection of fields) in one table, that refers to the PRIMARY KEY in another table.
+
+The table with the foreign key is called the child table, and the table with the primary key is called the referenced or parent table.
+
+Notice that the "PersonID" column in the "Orders" table points to the "PersonID" column in the "Persons" table.
+
+The "PersonID" column in the "Persons" table is the PRIMARY KEY in the "Persons" table.
+
+The "PersonID" column in the "Orders" table is a FOREIGN KEY in the "Orders" table.
+
+The FOREIGN KEY constraint prevents invalid data from being inserted into the foreign key column, because it has to be one of the values contained in the parent table.
+
+SQL FOREIGN KEY on CREATE TABLE
+The following SQL creates a FOREIGN KEY on the "PersonID" column when the "Orders" table is created:
+
+MySQL:
+
+```sql
+CREATE TABLE Orders (
+    OrderID int NOT NULL,
+    OrderNumber int NOT NULL,
+    PersonID int,
+    PRIMARY KEY (OrderID),
+    FOREIGN KEY (PersonID) REFERENCES Persons(PersonID)
+);
+```
+
+SQL Server / Oracle / MS Access:
+
+```sql
+CREATE TABLE Orders (
+    OrderID int NOT NULL PRIMARY KEY,
+    OrderNumber int NOT NULL,
+    PersonID int FOREIGN KEY REFERENCES Persons(PersonID)
+);
+```
+
+To allow naming of a FOREIGN KEY constraint, and for defining a FOREIGN KEY constraint on multiple columns, use the following SQL syntax:
+
+MySQL / SQL Server / Oracle / MS Access:
+
+```sql
+CREATE TABLE Orders (
+    OrderID int NOT NULL,
+    OrderNumber int NOT NULL,
+    PersonID int,
+    PRIMARY KEY (OrderID),
+    CONSTRAINT FK_PersonOrder FOREIGN KEY (PersonID)
+    REFERENCES Persons(PersonID)
+);
+```
+
+SQL FOREIGN KEY on ALTER TABLE
+To create a FOREIGN KEY constraint on the "PersonID" column when the "Orders" table is already created, use the following SQL:
+
+MySQL / SQL Server / Oracle / MS Access:
+
+```sql
+ALTER TABLE Orders
+ADD FOREIGN KEY (PersonID) REFERENCES Persons(PersonID);
+```
+
+To allow naming of a FOREIGN KEY constraint, and for defining a FOREIGN KEY constraint on multiple columns, use the following SQL syntax:
+
+MySQL / SQL Server / Oracle / MS Access:
+
+```sql
+ALTER TABLE Orders
+ADD CONSTRAINT FK_PersonOrder
+FOREIGN KEY (PersonID) REFERENCES Persons(PersonID);
+```
+
+DROP a FOREIGN KEY Constraint
+To drop a FOREIGN KEY constraint, use the following SQL:
+
+MySQL:
+
+```sql
+ALTER TABLE Orders
+DROP FOREIGN KEY FK_PersonOrder;
+```
+
+SQL Server / Oracle / MS Access:
+
+```sql
+ALTER TABLE Orders
+DROP CONSTRAINT FK_PersonOrder;
+```
+
+SQL CHECK Constraint
+The CHECK constraint is used to limit the value range that can be placed in a column.
+
+If you define a CHECK constraint on a column it will allow only certain values for this column.
+
+If you define a CHECK constraint on a table it can limit the values in certain columns based on values in other columns in the row.
+
+SQL CHECK on CREATE TABLE
+The following SQL creates a CHECK constraint on the "Age" column when the "Persons" table is created. The CHECK constraint ensures that the age of a person must be 18, or older:
+
+MySQL:
+
+```sql
+CREATE TABLE Persons (
+    ID int NOT NULL,
+    LastName varchar(255) NOT NULL,
+    FirstName varchar(255),
+    Age int,
+    CHECK (Age>=18)
+);
+```
+
+SQL Server / Oracle / MS Access:
+
+```sql
+CREATE TABLE Persons (
+    ID int NOT NULL,
+    LastName varchar(255) NOT NULL,
+    FirstName varchar(255),
+    Age int CHECK (Age>=18)
+);
+```
+
+To allow naming of a CHECK constraint, and for defining a CHECK constraint on multiple columns, use the following SQL syntax:
+
+MySQL / SQL Server / Oracle / MS Access:
+
+```sql
+CREATE TABLE Persons (
+    ID int NOT NULL,
+    LastName varchar(255) NOT NULL,
+    FirstName varchar(255),
+    Age int,
+    City varchar(255),
+    CONSTRAINT CHK_Person CHECK (Age>=18 AND City='Sandnes')
+);
+```
+
+SQL CHECK on ALTER TABLE
+To create a CHECK constraint on the "Age" column when the table is already created, use the following SQL:
+
+MySQL / SQL Server / Oracle / MS Access:
+
+```sql
+ALTER TABLE Persons
+ADD CHECK (Age>=18);
+```
+
+To allow naming of a CHECK constraint, and for defining a CHECK constraint on multiple columns, use the following SQL syntax:
+
+MySQL / SQL Server / Oracle / MS Access:
+
+```sql
+ALTER TABLE Persons
+ADD CONSTRAINT CHK_PersonAge CHECK (Age>=18 AND City='Sandnes');
+```
+
+DROP a CHECK Constraint
+To drop a CHECK constraint, use the following SQL:
+
+SQL Server / Oracle / MS Access:
+
+```sql
+ALTER TABLE Persons
+DROP CONSTRAINT CHK_PersonAge;
+```
+
+MySQL:
+
+```sql
+ALTER TABLE Persons
+DROP CHECK CHK_PersonAge;
+```
+
+SQL DEFAULT Constraint
+The DEFAULT constraint is used to set a default value for a column.
+
+The default value will be added to all new records, if no other value is specified.
+
+SQL DEFAULT on CREATE TABLE
+The following SQL sets a DEFAULT value for the "City" column when the "Persons" table is created:
+
+My SQL / SQL Server / Oracle / MS Access:
+
+```sql
+CREATE TABLE Persons (
+    ID int NOT NULL,
+    LastName varchar(255) NOT NULL,
+    FirstName varchar(255),
+    Age int,
+    City varchar(255) DEFAULT 'Sandnes'
+);
+```
+
+The DEFAULT constraint can also be used to insert system values, by using functions like GETDATE():
+
+```sql
+CREATE TABLE Orders (
+    ID int NOT NULL,
+    OrderNumber int NOT NULL,
+    OrderDate date DEFAULT GETDATE()
+);
+```
+
+SQL DEFAULT on ALTER TABLE
+To create a DEFAULT constraint on the "City" column when the table is already created, use the following SQL:
+
+MySQL:
+
+```sql
+ALTER TABLE Persons
+ALTER City SET DEFAULT 'Sandnes';
+```
+
+SQL Server:
+
+```sql
+ALTER TABLE Persons
+ADD CONSTRAINT df_City
+DEFAULT 'Sandnes' FOR City;
+```
+
+MS Access:
+
+```sql
+ALTER TABLE Persons
+ALTER COLUMN City SET DEFAULT 'Sandnes';
+```
+
+Oracle:
+
+```sql
+ALTER TABLE Persons
+MODIFY City DEFAULT 'Sandnes';
+```
+
+DROP a DEFAULT Constraint
+To drop a DEFAULT constraint, use the following SQL:
+
+MySQL:
+
+```sql
+ALTER TABLE Persons
+ALTER City DROP DEFAULT;
+```
+
+SQL Server / Oracle / MS Access:
+
+```sql
+ALTER TABLE Persons
+ALTER COLUMN City DROP DEFAULT;
+```
+
+SQL CREATE INDEX Statement
+The CREATE INDEX statement is used to create indexes in tables.
+
+Indexes are used to retrieve data from the database more quickly than otherwise. The users cannot see the indexes, they are just used to speed up searches/queries.
+
+Note: Updating a table with indexes takes more time than updating a table without (because the indexes also need an update). So, only create indexes on columns that will be frequently searched against.
+
+CREATE INDEX Syntax
+Creates an index on a table. Duplicate values are allowed:
+
+```sql
+CREATE INDEX index_name
+ON table_name (column1, column2, ...);
+```
+
+CREATE UNIQUE INDEX Syntax
+Creates a unique index on a table. Duplicate values are not allowed:
+
+```sql
+CREATE UNIQUE INDEX index_name
+ON table_name (column1, column2, ...);
+```
+
+Note: The syntax for creating indexes varies among different databases. Therefore: Check the syntax for creating indexes in your database.
+
+CREATE INDEX Example
+The SQL statement below creates an index named "idx_lastname" on the "LastName" column in the "Persons" table:
+
+```sql
+CREATE INDEX idx_lastname
+ON Persons (LastName);
+```
+
+If you want to create an index on a combination of columns, you can list the column names within the parentheses, separated by commas:
+
+```sql
+CREATE INDEX idx_pname
+ON Persons (LastName, FirstName);
+```
+
+DROP INDEX Statement
+The DROP INDEX statement is used to delete an index in a table.
+
+MS Access:
+
+```sql
+DROP INDEX index_name ON table_name;
+```
+
+SQL Server:
+
+```sql
+DROP INDEX table_name.index_name;
+```
+
+DB2/Oracle:
+
+```sql
+DROP INDEX index_name;
+```
+
+MySQL:
+
+```sql
+ALTER TABLE table_name
+DROP INDEX index_name;
+```
+
+AUTO INCREMENT Field
+Auto-increment allows a unique number to be generated automatically when a new record is inserted into a table.
+
+Often this is the primary key field that we would like to be created automatically every time a new record is inserted.
+
+Syntax for MySQL
+The following SQL statement defines the "Personid" column to be an auto-increment primary key field in the "Persons" table:
+
+```sql
+CREATE TABLE Persons (
+    Personid int NOT NULL AUTO_INCREMENT,
+    LastName varchar(255) NOT NULL,
+    FirstName varchar(255),
+    Age int,
+    PRIMARY KEY (Personid)
+);
+```
+
+MySQL uses the AUTO_INCREMENT keyword to perform an auto-increment feature.
+
+By default, the starting value for AUTO_INCREMENT is 1, and it will increment by 1 for each new record.
+
+To let the AUTO_INCREMENT sequence start with another value, use the following SQL statement:
+
+```sql
+ALTER TABLE Persons AUTO_INCREMENT=100;
+```
+
+To insert a new record into the "Persons" table, we will NOT have to specify a value for the "Personid" column (a unique value will be added automatically):
+
+```sql
+INSERT INTO Persons (FirstName,LastName)
+VALUES ('Lars','Monsen');
+```
+
+The SQL statement above would insert a new record into the "Persons" table. The "Personid" column would be assigned a unique value. The "FirstName" column would be set to "Lars" and the "LastName" column would be set to "Monsen".
+
+Syntax for SQL Server
+The following SQL statement defines the "Personid" column to be an auto-increment primary key field in the "Persons" table:
+
+```sql
+CREATE TABLE Persons (
+    Personid int IDENTITY(1,1) PRIMARY KEY,
+    LastName varchar(255) NOT NULL,
+    FirstName varchar(255),
+    Age int
+);
+```
+
+The MS SQL Server uses the IDENTITY keyword to perform an auto-increment feature.
+
+In the example above, the starting value for IDENTITY is 1, and it will increment by 1 for each new record.
+
+Tip: To specify that the "Personid" column should start at value 10 and increment by 5, change it to IDENTITY(10,5).
+
+To insert a new record into the "Persons" table, we will NOT have to specify a value for the "Personid" column (a unique value will be added automatically):
+
+```sql
+INSERT INTO Persons (FirstName,LastName)
+VALUES ('Lars','Monsen');
+```
+
+The SQL statement above would insert a new record into the "Persons" table. The "Personid" column would be assigned a unique value. The "FirstName" column would be set to "Lars" and the "LastName" column would be set to "Monsen".
+
+Syntax for Access
+The following SQL statement defines the "Personid" column to be an auto-increment primary key field in the "Persons" table:
+
+```sql
+CREATE TABLE Persons (
+    Personid AUTOINCREMENT PRIMARY KEY,
+    LastName varchar(255) NOT NULL,
+    FirstName varchar(255),
+    Age int
+);
+```
+
+The MS Access uses the AUTOINCREMENT keyword to perform an auto-increment feature.
+
+By default, the starting value for AUTOINCREMENT is 1, and it will increment by 1 for each new record.
+
+Tip: To specify that the "Personid" column should start at value 10 and increment by 5, change the autoincrement to AUTOINCREMENT(10,5).
+
+To insert a new record into the "Persons" table, we will NOT have to specify a value for the "Personid" column (a unique value will be added automatically):
+
+```sql
+INSERT INTO Persons (FirstName,LastName)
+VALUES ('Lars','Monsen');
+```
+
+The SQL statement above would insert a new record into the "Persons" table. The "Personid" column would be assigned a unique value. The "FirstName" column would be set to "Lars" and the "LastName" column would be set to "Monsen".
+
+Syntax for Oracle
+In Oracle the code is a little bit more tricky.
+
+You will have to create an auto-increment field with the sequence object (this object generates a number sequence).
+
+Use the following CREATE SEQUENCE syntax:
+
+```sql
+CREATE SEQUENCE seq_person
+MINVALUE 1
+START WITH 1
+INCREMENT BY 1
+CACHE 10;
+```
+
+The code above creates a sequence object called seq_person, that starts with 1 and will increment by 1. It will also cache up to 10 values for performance. The cache option specifies how many sequence values will be stored in memory for faster access.
+
+To insert a new record into the "Persons" table, we will have to use the nextval function (this function retrieves the next value from seq_person sequence):
+
+```sql
+INSERT INTO Persons (Personid,FirstName,LastName)
+VALUES (seq_person.nextval,'Lars','Monsen');
+```
+
+The SQL statement above would insert a new record into the "Persons" table. The "Personid" column would be assigned the next number from the seq_person sequence. The "FirstName" column would be set to "Lars" and the "LastName" column would be set to "Monsen".
+
+SQL Dates
+The most difficult part when working with dates is to be sure that the format of the date you are trying to insert, matches the format of the date column in the database.
+
+As long as your data contains only the date portion, your queries will work as expected. However, if a time portion is involved, it gets more complicated.
+
+SQL Date Data Types
+MySQL comes with the following data types for storing a date or a date/time value in the database:
+
+DATE - format YYYY-MM-DD
+DATETIME - format: YYYY-MM-DD HH:MI:SS
+TIMESTAMP - format: YYYY-MM-DD HH:MI:SS
+YEAR - format YYYY or YY
+SQL Server comes with the following data types for storing a date or a date/time value in the database:
+
+DATE - format YYYY-MM-DD
+DATETIME - format: YYYY-MM-DD HH:MI:SS
+SMALLDATETIME - format: YYYY-MM-DD HH:MI:SS
+TIMESTAMP - format: a unique number
+Note: The date types are chosen for a column when you create a new table in your database!
+
+We use the following SELECT statement:
+
+```sql
+SELECT * FROM Orders WHERE OrderDate='2008-11-11'
+```
+
+Note: Two dates can easily be compared if there is no time component involved!
+
+If we use the same SELECT statement as above:
+
+```sql
+SELECT * FROM Orders WHERE OrderDate='2008-11-11'
+```
+
+we will get no result! This is because the query is looking only for dates with no time portion.
+
+Tip: To keep your queries simple and easy to maintain, do not use time-components in your dates, unless you have to!
+
+SQL CREATE VIEW Statement
+In SQL, a view is a virtual table based on the result-set of an SQL statement.
+
+A view contains rows and columns, just like a real table. The fields in a view are fields from one or more real tables in the database.
+
+You can add SQL statements and functions to a view and present the data as if the data were coming from one single table.
+
+A view is created with the CREATE VIEW statement.
+
+CREATE VIEW Syntax
+
+```sql
+CREATE VIEW view_name AS
+SELECT column1, column2, ...
+FROM table_name
+WHERE condition;
+```
+
+Note: A view always shows up-to-date data! The database engine recreates the view, every time a user queries it.
+
+SQL CREATE VIEW Examples
+The following SQL creates a view that shows all customers from Brazil:
+
+Example
+
+```sql
+CREATE VIEW [Brazil Customers] AS
+SELECT CustomerName, ContactName
+FROM Customers
+WHERE Country = 'Brazil';
+```
+
+We can query the view above as follows:
+
+Example
+
+```sql
+SELECT * FROM [Brazil Customers];
+```
+
+The following SQL creates a view that selects every product in the "Products" table with a price higher than the average price:
+
+Example
+
+```sql
+CREATE VIEW [Products Above Average Price] AS
+SELECT ProductName, Price
+FROM Products
+WHERE Price > (SELECT AVG(Price) FROM Products);
+```
+
+We can query the view above as follows:
+
+Example
+
+```sql
+SELECT * FROM [Products Above Average Price];
+```
+
+SQL Updating a View
+A view can be updated with the CREATE OR REPLACE VIEW statement.
+
+SQL CREATE OR REPLACE VIEW Syntax
+
+```sql
+CREATE OR REPLACE VIEW view_name AS
+SELECT column1, column2, ...
+FROM table_name
+WHERE condition;
+```
+
+The following SQL adds the "City" column to the "Brazil Customers" view:
+
+Example
+
+```sql
+CREATE OR REPLACE VIEW [Brazil Customers] AS
+SELECT CustomerName, ContactName, City
+FROM Customers
+WHERE Country = 'Brazil';
+```
+
+SQL Dropping a View
+A view is deleted with the DROP VIEW statement.
+
+SQL DROP VIEW Syntax
+
+```sql
+DROP VIEW view_name;
+```
+
+The following SQL drops the "Brazil Customers" view:
+
+Example
+
+```sql
+DROP VIEW [Brazil Customers];
+```
+
+Source : https://www.w3schools.com/sql/sql_quickref.asp
