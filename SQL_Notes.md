@@ -179,19 +179,22 @@ There are two wildcards often used in conjunction with the LIKE operator:
 
 The percent sign (%) represents zero, one, or multiple characters
 The underscore sign (_) represents one, single character
-Note: MS Access uses an asterisk (\*) instead of the percent sign (%), and a question mark (?) instead of the underscore (_).
+
+```sql
+Note: MS Access uses an asterisk (*) instead of the percent sign (%), and a question mark (?) instead of the underscore (_).
+```
 
 The percent sign and the underscore can also be used in combinations!
 You can also combine any number of conditions using AND or OR operators.
 
 ```sql
-LIKE  Operator	                Description
+LIKE  Operator	                  Description
 WHERE CustomerName LIKE 'a%'	  Finds any values that start with "a"
 WHERE CustomerName LIKE '%a'	  Finds any values that end with "a"
-WHERE CustomerName LIKE '%or%'	Finds any values that have "or" in any position
+WHERE CustomerName LIKE '%or%'	  Finds any values that have "or" in any position
 WHERE CustomerName LIKE '_r%'	  Finds any values that have "r" in the second position
 WHERE CustomerName LIKE 'a_%'	  Finds any values that start with "a" and are at least 2 characters in length
-WHERE CustomerName LIKE 'a__%'	Finds any values that start with "a" and are at least 3 characters in length
+WHERE CustomerName LIKE 'a__%'	  Finds any values that start with "a" and are at least 3 characters in length
 WHERE ContactName  LIKE 'a%o'	  Finds any values that start with "a" and ends with "o"
 ```
 
@@ -1103,7 +1106,9 @@ _	      Represents a single character	                                  h_t find
 -	      Represents a range of characters	                              c[a-b]t finds cat and cbt
 ```
 
-Here are some examples showing different LIKE operators with '%' and '\_' wildcards:
+```sql
+Here are some examples showing different LIKE operators with '%' and '_' wildcards:
+```
 
 ```sql
 LIKE    Operator	                                                Description
