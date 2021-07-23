@@ -1810,23 +1810,23 @@ Operator	Description
 =	        Equal to
 >	        Greater than
 <	        Less than
->=	      Greater than or equal to
-<=	      Less than or equal to
-<>	      Not equal to
+>=	        Greater than or equal to
+<=	        Less than or equal to
+<>	        Not equal to
 ```
 
 SQL Compound Operators
 
 ```sql
 Operator	Description
-+=	      Add equals
--=	      Subtract equals
-*=	      Multiply equals
-/=	      Divide equals
-%=	      Modulo equals
-&=	      Bitwise AND equals
-^-=	      Bitwise exclusive equals
-|*=	      itwise OR equals
++=	        Add equals
+-=	        Subtract equals
+*=	        Multiply equals
+/=	        Divide equals
+%=	        Modulo equals
+&=	        Bitwise AND equals
+^-=	        Bitwise exclusive equals
+|*=	        itwise OR equals
 ```
 
 SQL Logical Operators
