@@ -175,10 +175,14 @@ SELECT team, first_name, last_name, shirt_or_hat, state_code FROM people WHERE s
 
 The LIKE operator is used in a WHERE clause to search for a specified pattern in a column.
 
+LIKE is case-sensitive but ILIKE is case-unsensitive
+
 There are two wildcards often used in conjunction with the LIKE operator:
 
+```sql
 The percent sign (%) represents zero, one, or multiple characters
-The underscore sign (\_) represents one, single character
+The underscore sign (_) represents one, single character
+```
 
 ```sql
 Note: MS Access uses an asterisk (*) instead of the percent sign (%), and a question mark (?) instead of the underscore (_).
@@ -663,6 +667,12 @@ SELECT team, COUNT(*), SUM(quiz_points), SUM(quiz_points)/COUNT(*) FROM people G
 SELECT team, COUNT(*), SUM(quiz_points), AVG(quiz_points) FROM people GROUP BY team;
 ```
 
+```sql
+SELECT ROUND(AVG(column), 2) FROM film;
+```
+
+esto dice que luego de la coma incluye 2 dígitos y no más
+
 ## 03_03
 
 ```SQL
@@ -936,6 +946,20 @@ No se puede usar agregate-funcions con WHERE clouse, solamente con HAVING
 
 Siempre que usamos agregate-funcions usamos GROUP BY, van de la mano
 
+En GROUP BY statment siempre van todas las columnas que aparecen en el SELECT statment menos la que tenga algún
+
+In the SELECT statment columns must either have an aggregate function or be in the GROUP BY call
+
+```sql
+SELECT company, division, SUM(sales)
+FROM finance_table
+WHERE division IN ('marketing', 'transport')
+HAVING SUM(sales) > 30
+GROUP BY company, division
+ORDER BY SUM(sales)
+LIMIT 5;
+```
+
 The GROUP BY statement groups rows that have the same values into summary rows, like "find the number of customers in each country".
 
 The GROUP BY statement is often used with aggregate functions (COUNT(), MAX(), MIN(), SUM(), AVG()) to group the result-set by one or more columns.
@@ -966,6 +990,11 @@ SELECT COUNT(CustomerID), Country
 FROM Customers
 GROUP BY Country
 ORDER BY COUNT(CustomerID) DESC;
+
+
+SELECT categort_col, AGG(data_col)
+FROM table
+GROUP BY category_col;
 ```
 
 The SQL SELECT TOP Clause
@@ -2871,3 +2900,40 @@ DROP VIEW [Brazil Customers];
 ```
 
 Source : https://www.w3schools.com/sql/sql_quickref.asp
+
+```sql
+SELECT COUNT(DISTINCT name) from table;
+```
+
+```sql
+SELECT COUNT(DISTINCT (name)) from table;
+```
+
+```sql
+SELECT DATE(payment_date) FROM payment;
+```
+
+DATE function removes timestamp information, just keeps the date
+
+UN EJEMPLO, usando GROUP BY de dos columnas:
+
+```sql
+SELECT staff_id, customer_id , SUM(amount)
+FROM payment
+GROUP BY staff_id, customer_id
+ORDER BY SUM (amount);
+```
+
+Hacer esto es lo mismo que un DISTINCT, no nos muestra datos repetidos:
+
+```sql
+SELECT numbers
+FROM list_of_numbers
+GROUP BY numbers;
+```
+
+```sql
+SELECT COUNT(numbers)
+FROM list_of_numbers
+GROUP BY COUNT(numbers);
+```
